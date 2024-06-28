@@ -9,5 +9,6 @@ const { authenticateToken } = require("../middleware/middleware");
 
 // ROUTES
 router.get("/test", test_controller.test);
+router.get("/test/secure", authenticateToken, test_controller.test);
 
 module.exports = router;
