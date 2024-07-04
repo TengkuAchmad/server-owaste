@@ -1,28 +1,54 @@
-const jwt = require("jsonwebtoken");
+// ENVIRONTMENT
+require('dotenv').config()
 
-const { JWT_SECRET } = process.env;
+// LIBRARY
+const jwt = require("jsonwebtoken")
 
-const authenticateToken = (req, res, next) => {
-    const authHeader    = req.headers['authorization'];
-    const token         = authHeader && authHeader.split(' ')[1];
+const { PrismaClient }      = require("@prisma/client")
+
+// CONSTANT
+const { JWT_SECRET } = process.env
+
+// RESPONSES
+const { badRequestResponse } = require("../responses/responses")
+
+// PRISMA
+const prisma            = new PrismaClient()
+
+const authenticateToken = async (req, res, next) => {
+    const authHeader    = req.headers['authorization']
+    const token         = authHeader && authHeader.split(' ')[1]
 
     if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return badRequestResponse(res, "Unauthorized")
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET)
 
-        if (decoded.exp < Date.now() / 1000) {
-            return res.status(401).json({ message: "Token expired" });
+        const isUserExist = await prisma.userAccount.findUnique({
+            where: {
+                UUID_UA: decoded.userID,
+            }
+        })
+
+        if (isUserExist) {
+
+            if (decoded.exp < Date.now() / 1000) {
+                return badRequestResponse(res, "Token expired")
+            }
+
+            req.locals = { user: decoded.userID }
+
+            return next()
+
+        } else {
+            return badRequestResponse(res, "Access token invalid!")
         }
-
-        req.locals = { user: decoded.userID };
-
-        return next();
+        
     } catch (err) {
-        return res.status(401).json({ message: "Invalid token" });
+        return badRequestResponse(res, err)
     }
 }
 
-module.exports = { authenticateToken };
+module.exports = { authenticateToken }

@@ -1,8 +1,11 @@
+// RESPONSES
+const { successResponse }   = require("../responses/responses")
+const { badRequestResponse }= require("../responses/responses")
 
 exports.test = async(req, res) => {
     try {
-        return res.status(200).json({ message: "API Running"});
+        return successResponse(res, "Test Successful")
     } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error" });
+        return badRequestResponse(res, "Test Failed", error)
     }
 }

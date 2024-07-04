@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,11 +8,11 @@ datasource db {
 }
 
 model UserAccount {
-  UUID_UA         String             @id
+  UUID_UA         String             @id @default(uuid())
   Name_UA         String
   Email_UA        String             @unique
   Password_UA     String
-  Phone_UA        String
+  Phone_UA        String?
   Address_UA      String?
   Birthplace_UA   String?
   Birthdate_UA    DateTime?
@@ -34,10 +28,19 @@ model UserAccount {
 }
 
 model UserData {
-  UUID_UD         String            @id
+  UUID_UD         String            @id @default(uuid())
   UserAccount     UserAccount       @relation(fields: [UUID_UA], references: [UUID_UA])
   UUID_UA         String            @unique           
   Balance_UD      Float             @default(0)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model ArticleData {
+  UUID_AD         String            @id @default(uuid())
+  Title_AD        String
+  Description_AD  String            @db.Text
+  Image_AD        String          
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 }
