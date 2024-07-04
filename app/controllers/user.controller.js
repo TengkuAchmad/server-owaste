@@ -38,6 +38,8 @@ exports.auth = async(req, res) => {
             const accessToken = jwt.sign({ userID: user.UUID_UA }, JWT_SECRET, { expiresIn: "1d" })
 
             return successResponse(res, "Authenticated", accessToken )
+        } else {
+            return errorResponse(res, "Invalid email or password")
         }
 
     } catch (error) {
