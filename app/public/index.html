@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Example</title>
+</head>
+<body>
+  <h1>WebSocket Example</h1>
+  <script>
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJiODY3Y2EwMy0yMTRhLTRkNzMtYmExNC00ZWQyZmExYmViNTgiLCJpYXQiOjE3MjAzNDc2MjEsImV4cCI6MTcyMDQzNDAyMX0.Ygn5PiPrZPItTg67Jca-sQShJQpg66_DTZ-LM6TNcck';
+    const ws = new WebSocket(`ws://localhost:3000?token=${token}`);
+
+    ws.onopen = () => {
+      console.log('Connected to WebSocket server');
+      ws.send('Hello from client');
+    };
+
+    ws.onmessage = (event) => {
+      const notification = JSON.parse(event.data);
+      console.log(`Notification from server: ${JSON.stringify(notification)}`);
+    };
+
+    ws.onclose = () => {
+      console.log('Disconnected from WebSocket server');
+    };
+  </script>
+</body>
+</html>

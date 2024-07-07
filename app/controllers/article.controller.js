@@ -4,7 +4,6 @@ const { PrismaClient }      = require("@prisma/client")
 
 // ENVIRONMENT
 const { successResponse }       = require("../responses/responses")
-const { errorResponse }         = require("../responses/responses")
 const { badRequestResponse }    = require("../responses/responses")
 
 // FILE SERVICES

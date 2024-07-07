@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE `Notification` (
+    `UUID_NF` VARCHAR(191) NOT NULL,
+    `UUID_UA` VARCHAR(191) NOT NULL,
+    `Title_NF` VARCHAR(191) NOT NULL,
+    `Description_NF` TEXT NOT NULL,
+    `Schedule_NF` DATETIME(3) NOT NULL,
+    `isRead_NF` BOOLEAN NOT NULL DEFAULT false,
+    `isGlobal_NF` BOOLEAN NOT NULL DEFAULT false,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`UUID_NF`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Notification` ADD CONSTRAINT `Notification_UUID_UA_fkey` FOREIGN KEY (`UUID_UA`) REFERENCES `UserAccount`(`UUID_UA`) ON DELETE RESTRICT ON UPDATE CASCADE;
