@@ -1,13 +1,15 @@
 // LIBRARY IMPORT
-const { PrismaClient }      = require("@prisma/client")
+const { PrismaClient }          = require("@prisma/client")
+const { v4: uuidv4 }            = require("uuid")
 
 // ENVIRONMENT
 const { successResponse }       = require("../responses/responses")
 const { badRequestResponse }    = require("../responses/responses")
 
-
 // PRISMA
 const prisma            = new PrismaClient()
+
+
 
 exports.create = async(req, res) => {
   try {
@@ -30,15 +32,18 @@ exports.create = async(req, res) => {
     }
 
     const dateInput = convertLocalDate(scheduleDate)
-  
+    
+    let id = uuidv4()
+
     await prisma.notification.create({
-      data: {
-        Title_NF: title,
-        Description_NF: description,
-        Schedule_NF: dateInput
+        data: {
+            UUID_NF: id,
+            Title_NF: title,
+            Description_NF: description,
+            Schedule_NF: dateInput
         }
     })
-
+    
     return successResponse(res, "Notification created successfully")
 
   } catch (error) {

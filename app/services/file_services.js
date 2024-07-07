@@ -1,10 +1,8 @@
 // LIBRARY IMPORT
 const { v4: uuidv4 }        = require("uuid")
-const fs                    = require("fs")
 
 // ENVIRONMENT
 const { getStorage, ref, deleteObject, uploadBytes, getDownloadURL} = require("firebase/storage")
-const file_path             = "app\json\local.data.json"
 
 
 exports.upload = async (category, file) => {
@@ -43,26 +41,5 @@ exports.delete = async (fileUrl) => {
         return true
     } catch (error) {
         throw new Error(error.message)
-    }
-}
-
-exports.readJson = async() => {
-    try {
-        const data = fs.readFileSync(file_path, "utf8")
-        return JSON.parse(data)
-    } catch (error) {
-        return {
-            wsclients: {},
-            wspayload: {}
-        }
-    }
-}
-
-exports.writeJson = async(data) => {
-    try {
-        fs.writeFileSync(file_path, JSON.stringify(data, null, 2), "utf8")
-        console.log("Data written successfully")
-    } catch (error) {
-        console.log("Error writing data:", error)
     }
 }

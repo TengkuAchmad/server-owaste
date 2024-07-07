@@ -25,27 +25,26 @@ const WebSocketMiddleware = async (ws, req, next) => {
     try {
         const decoded = jwt.verify(token, JWT_SECRET)
 
-        const isUserExist = await prisma.userAccount.findUnique({
+        const user = await prisma.userAccount.findUnique({
             where: {
                 UUID_UA: decoded.userID,
             }
         })
 
-        if (isUserExist) {
-
-            if (decoded.exp < Date.now() / 1000) {
-                ws.close(4001, "Token expired")
-                return
-            }
-
-            ws.userID = decoded.userID
-
-            next(ws)
-
-        } else {
+        if (!user) {
             ws.close(4001, "Invalid token")
             return
         }
+
+        if (decoded.exp < Date.now() / 1000) {
+            ws.close(4001, "Token expired")
+            return
+        }
+        
+        const userUUID = decoded.userID
+
+        return next(userUUID)
+
     } catch (err) {
         ws.close(4001, err.message);
         return
