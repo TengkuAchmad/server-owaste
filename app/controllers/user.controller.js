@@ -135,7 +135,7 @@ exports.findOne = async(req, res) => {
 
 exports.update = async(req, res) => {
     try {
-        const id = req.locals.user
+        const {id} = req.params
 
         const user = await prisma.userAccount.findUnique({
             where: {

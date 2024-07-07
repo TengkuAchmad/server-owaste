@@ -9,7 +9,7 @@ const user_controller       = require("../controllers/user.controller")
 
 router.post("/user-management/auth", user_controller.auth)
 router.post("/user-management/create", user_controller.create)
-router.put("/user-management/update", authenticateToken, user_controller.update)
+router.put("/user-management/update/:id", authenticateToken, user_controller.update)
 router.get("/user-management/find/all", authenticateToken,user_controller.findAll)
 router.get("/user-management/find/one", authenticateToken, user_controller.findOne)
 router.delete("/user-management/delete/:id", authenticateToken, user_controller.deleteOne)
