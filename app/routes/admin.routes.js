@@ -13,6 +13,6 @@ router.put("/admin-management/update/:id", authenticateToken, admin_controller.u
 router.get("/admin-management/find/all", authenticateToken,admin_controller.findAll)
 router.get("/admin-management/find/one", authenticateToken, admin_controller.findOne)
 router.delete("/admin-management/delete/:id", authenticateToken, admin_controller.deleteOne)
-router.delete("/admin-management/delete/all", authenticateToken, admin_controller.deleteAll)
+router.delete("/admin-management/delete", authenticateToken, admin_controller.deleteAll)
 
 module.exports = router

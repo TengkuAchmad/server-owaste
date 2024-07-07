@@ -17,7 +17,6 @@ exports.WebSocketServices = (wss) => {
 
                 // USERID
                 const UserID = ws.UserID
-                console.log(UserID)
 
                 // ADD CLIENT TO JSON
                 WebSocketData.wsclients[UserID] = { ws, connectedAt: new Date()}
@@ -35,8 +34,29 @@ exports.WebSocketServices = (wss) => {
                     console.log('connection closed')
                 })
             })
+
+            setInterval(() => {
+                const now  = convertLocalDate(new Date())
+
+                WebSocketData = readJson()
+
+                const client = WebSocketData.wsclients
+
+                if (client && client.ws.readyState === WebSocket.OPEN) {
+                    client.ws.send("HALO DUNIA!")
+                }
+            }, 2000)
+
         })
     } catch (e) {
         throw new Error(e)
     }
+}
+
+function convertLocalDate(date) {
+    const jakartaTimezone = "Asia/Jakarta";
+    const jakartaDate = new Date(date.toLocaleString("en-US", { timeZone: jakartaTimezone }));
+    const resultTimes = jakartaDate.setSeconds(0, 0)
+
+    return new Date(resultTimes)
 }
