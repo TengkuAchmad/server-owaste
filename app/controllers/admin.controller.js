@@ -27,8 +27,7 @@ exports.auth = async(req, res) => {
         const user  = await prisma.userAccount.findUnique({
             where: {
                 Email_UA: req.body.email,
-                isUser_UA: true,
-                isAdmin_UA: false,
+                isAdmin_UA: true,
                 isOperator_UA: false
             },
         });
@@ -70,7 +69,10 @@ exports.create = async(req, res) => {
                 Address_UA: address,
                 Birthplace_UA: birthplace,
                 Birthdate_UA: new Date(birthdate),
-                Password_UA: hashedPassword
+                Password_UA: hashedPassword,
+                isUser_UA: false,
+                isAdmin_UA: true,
+                isOperator_UA: false,
             }
         })
 
@@ -92,8 +94,8 @@ exports.findAll = async(req, res) => {
     try {
         const responses = await prisma.userAccount.findMany({
             where: {
-                isUser_UA: true,
-                isAdmin_UA: false,
+                isUser_UA: false,
+                isAdmin_UA: true,
                 isOperator_UA: false
             }, select: {
                 UUID_UA: true,
@@ -119,8 +121,8 @@ exports.findOne = async(req, res) => {
         const responses = await prisma.userAccount.findUnique({
             where: {
                 UUID_UA: id,
-                isUser_UA: true,
-                isAdmin_UA: false,
+                isUser_UA: false,
+                isAdmin_UA: true,
                 isOperator_UA: false
             }, select: {
                 UUID_UA: true,
@@ -143,13 +145,16 @@ exports.update = async(req, res) => {
     try {
         const {id} = req.params
 
-        const user = await prisma.userAccount.findUnique({
+        const admin = await prisma.userAccount.findUnique({
             where: {
                 UUID_UA: id,
+                isUser_UA: false,
+                isAdmin_UA: true,
+                isOperator_UA: false
             }
         })
 
-        if (user) {
+        if (admin) {
             const updateData = Object.keys(req.body).reduce((acc, key) => {
                 acc[key] = req.body[key];
                 return acc;
@@ -175,17 +180,17 @@ exports.deleteOne = async(req, res) => {
     try {
         const { id } =  req.params 
 
-        const user = await prisma.userAccount.findUnique({
+        const admin = await prisma.userAccount.findUnique({
             where: {
                 UUID_UA: id,
-                isUser_UA: true,
-                isAdmin_UA: false,
+                isUser_UA: false,
+                isAdmin_UA: true,
                 isOperator_UA: false
             }
         })
 
 
-        if (user) {
+        if (admin) {
 
             await prisma.userData.deleteMany({
                 where: {
@@ -196,6 +201,9 @@ exports.deleteOne = async(req, res) => {
             await prisma.userAccount.delete({
                 where: {
                     UUID_UA: id,
+                    isUser_UA: false,
+                    isAdmin_UA: true,
+                    isOperator_UA: false
                 }
             })
 
@@ -210,21 +218,21 @@ exports.deleteOne = async(req, res) => {
 
 exports.deleteAll = async(req, res) => {
     try {
-        const user = await prisma.userAccount.findMany({
+        const admin = await prisma.userAccount.findMany({
             where: {
-                isUser_UA: true,
-                isAdmin_UA: false,
+                isUser_UA: false,
+                isAdmin_UA: true,
                 isOperator_UA: false
             }
         })
 
-        if (user) {
+        if (admin) {
 
             await prisma.userData.deleteMany({
                 where: {
                     UserAccount: {
-                        isUser_UA: true,
-                        isAdmin_UA: false,
+                        isUser_UA: false,
+                        isAdmin_UA: true,
                         isOperator_UA: false
                     }
                 }
@@ -232,8 +240,8 @@ exports.deleteAll = async(req, res) => {
 
             await prisma.userAccount.deleteMany({
                 where: {
-                    isUser_UA: true,
-                    isAdmin_UA: false,
+                    isUser_UA: false,
+                    isAdmin_UA: true,
                     isOperator_UA: false
                 }
             })

@@ -6,8 +6,8 @@
 <body>
   <h1>WebSocket Example</h1>
   <script>
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJiODY3Y2EwMy0yMTRhLTRkNzMtYmExNC00ZWQyZmExYmViNTgiLCJpYXQiOjE3MjAzNDc2MjEsImV4cCI6MTcyMDQzNDAyMX0.Ygn5PiPrZPItTg67Jca-sQShJQpg66_DTZ-LM6TNcck';
-    const ws = new WebSocket(`ws://localhost:3000?token=${token}`);
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2ZmVmZDA1NC0wOTRhLTQxYzEtOTM1Ny0wZWEzZjcwOGM2M2EiLCJpYXQiOjE3MjAzNjcxMDksImV4cCI6MTcyMDQ1MzUwOX0.NCFC1wfJcb6LAUr0zJQdIKR1Zrh-Huwp5B5ceyl_7Uo';
+    const ws    = new WebSocket(`ws://localhost:3000?token=${token}`);
 
     ws.onopen = () => {
       console.log('Connected to WebSocket server');

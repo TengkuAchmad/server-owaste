@@ -106,9 +106,9 @@ exports.deleteAll = async(req, res) => {
 }
 
 function convertLocalDate(date) {
-    const utcOffset = 7
-    const utcOffsetMs = utcOffset * 60 * 60 * 1000
-    const localTimeMs = date.getTime() + utcOffsetMs
+    const jakartaTimezone = "Asia/Jakarta";
+    const jakartaDate = new Date(date.toLocaleString("en-US", { timeZone: jakartaTimezone }));
+    const resultTimes = jakartaDate.setSeconds(0, 0)
 
-    return new Date(localTimeMs)
+    return new Date(resultTimes)
 }
