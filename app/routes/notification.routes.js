@@ -1,3 +1,6 @@
+// UNSUPPORTED FEATURES DUE TO SERVERLESS FUNCTION DEPLOYMENT
+// DO NOT USE THIS FILE
+
 // LIBRARY IMPORT
 const router                = require("express").Router()
 
