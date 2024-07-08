@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `Notification` ADD COLUMN `UUID_UA` VARCHAR(191) NULL;
+
+-- AddForeignKey
+ALTER TABLE `Notification` ADD CONSTRAINT `Notification_UUID_UA_fkey` FOREIGN KEY (`UUID_UA`) REFERENCES `UserAccount`(`UUID_UA`) ON DELETE SET NULL ON UPDATE CASCADE;

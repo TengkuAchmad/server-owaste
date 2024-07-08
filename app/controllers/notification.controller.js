@@ -9,8 +9,6 @@ const { badRequestResponse }    = require("../responses/responses")
 // PRISMA
 const prisma            = new PrismaClient()
 
-
-
 exports.create = async(req, res) => {
   try {
     const { title, description} = req.body
@@ -24,6 +22,7 @@ exports.create = async(req, res) => {
     if (!req.body.schedule) {
         scheduleDate = new Date()
         scheduleDate.setMinutes(scheduleDate.getMinutes() + 1)
+        scheduleDate.setSeconds(0, 0)
     } else {
         scheduleDate = new Date(req.body.schedule)
         if (isNaN(scheduleDate.getTime())) {
@@ -31,7 +30,7 @@ exports.create = async(req, res) => {
         }
     }
 
-    const dateInput = convertLocalDate(scheduleDate)
+    const dateInput = localTime(scheduleDate)
     
     let id = uuidv4()
 
@@ -65,42 +64,6 @@ exports.findAll = async(req, res) => {
     }
 }
 
-exports.findNow = async(req, res) => {
-    try {
-        const currentTime = convertLocalDate(new Date());
-
-        let data = []
-
-        const notifications = await prisma.notification.findMany({
-            where: {
-                Schedule_NF: {
-                    gte: currentTime
-                }
-            },
-            orderBy: { Schedule_NF: "asc" }
-        })
-
-        if (notifications.length == 0) {
-            return data
-        } else {
-            data = notifications
-        }
-
-        await prisma.notification.update({
-            where: {
-                UUID_NF: notifications[0]['UUID_NF'],
-            }, data: {
-                isSent_NF: true
-            }
-        })
-        
-        return data
-
-    } catch (error) {
-        return data
-    }
-}
-
 exports.deleteAll = async(req, res) => {
     try {
         await prisma.notification.deleteMany({})
@@ -110,10 +73,38 @@ exports.deleteAll = async(req, res) => {
     }
 }
 
-function convertLocalDate(date) {
-    const jakartaTimezone = "Asia/Jakarta";
-    const jakartaDate = new Date(date.toLocaleString("en-US", { timeZone: jakartaTimezone }));
-    const resultTimes = jakartaDate.setSeconds(0, 0)
+exports.findNotification = async () => {
+    try {
+        const now  = localTime(new Date()) 
+        const notification = await prisma.notification.findMany({
+            where:{
+                isSent_NF: false,
+                Schedule_NF: {
+                    lte: now
+                }
+            }
+        })
 
-    return new Date(resultTimes)
+        return notification
+    } catch (e) {
+        return false
+    }
+} 
+
+exports.sentNotification = async(notificationUUID) => {
+    return prisma.notification.update({
+        where: {
+            UUID_NF: notificationUUID
+        },
+        data: {
+            isSent_NF: true
+        }
+    })
+}
+
+function localTime(date) {
+    const utcOffset = 7; 
+    const utcOffsetMs = utcOffset * 60 * 60 * 1000; 
+    const localDate = date.getTime() + utcOffsetMs;
+    return new Date(localDate)
 }

@@ -25,6 +25,7 @@ model UserAccount {
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
   UserData        UserData[]
+  Notification    Notification[]
 }
 
 model UserData {
@@ -46,10 +47,12 @@ model ArticleData {
 }
 
 model Notification {
-  UUID_NF         String            @id @default(uuid())         
+  UUID_NF         String            @id @default(uuid())
+  UserAccount     UserAccount?       @relation(fields: [UUID_UA], references: [UUID_UA])
+  UUID_UA         String?            
   Title_NF        String
   Description_NF  String            @db.Text
-  Category_NG     String
+  Category_NG     String            @default("Public")
   Schedule_NF     DateTime
   isSent_NF       Boolean           @default(false)
   createdAt       DateTime          @default(now())
