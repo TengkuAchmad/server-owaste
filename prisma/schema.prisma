@@ -63,7 +63,7 @@ model VoucherData {
 model VoucherUser {
   UUID_VU         String            @id @default(uuid())
   UserData        UserData          @relation(fields: [UUID_UD], references: [UUID_UD])
-  UUID_UD         String            @unique
+  UUID_UD         String            
   VoucherData     VoucherData       @relation(fields: [UUID_VD], references: [UUID_VD])
   UUID_VD         String            @unique
   isUsed_VU       Boolean           @default(false)
