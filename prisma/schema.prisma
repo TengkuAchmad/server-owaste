@@ -25,8 +25,6 @@ model UserAccount {
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
   UserData        UserData[]
-  Notification    Notification[]
-  VoucherUser     VoucherUser[]
 }
 
 model UserData {
@@ -36,6 +34,9 @@ model UserData {
   Balance_UD      Float             @default(0)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
+  Notification    Notification[]
+  VoucherUser     VoucherUser[]
+  TransactionData TransactionData[]
 }
 
 model ArticleData {
@@ -52,7 +53,8 @@ model VoucherData {
   Title_VD        String
   Description_VD  String            @db.Text
   Value_VD        Float
-  Quota_VD        Int          
+  Quota_VD        Int
+  Price_VD        Float
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   VoucherUser     VoucherUser[]
@@ -60,19 +62,34 @@ model VoucherData {
 
 model VoucherUser {
   UUID_VU         String            @id @default(uuid())
-  UserAccount     UserAccount?       @relation(fields: [UUID_UA], references: [UUID_UA])
-  UUID_UA         String?           @unique           
+  UserData        UserData          @relation(fields: [UUID_UD], references: [UUID_UD])
+  UUID_UD         String            @unique
   VoucherData     VoucherData       @relation(fields: [UUID_VD], references: [UUID_VD])
   UUID_VD         String            @unique
   isUsed_VU       Boolean           @default(false)
+  Code_VU         String            @unique
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  TransactionData TransactionData[]
+}
+
+model TransactionData {
+  UUID_TD         String            @id @default(uuid())
+  UserData        UserData          @relation(fields: [UUID_UD], references: [UUID_UD])
+  UUID_UD         String
+  VoucherUser     VoucherUser       @relation(fields: [UUID_VU], references: [UUID_VU])
+  UUID_VU         String
+  Type_TD         String
+  Amount_TD       Float
+  Status_TD       String            @default("Pending")
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 }
 
 model Notification {
   UUID_NF         String            @id @default(uuid())
-  UserAccount     UserAccount?       @relation(fields: [UUID_UA], references: [UUID_UA])
-  UUID_UA         String?            
+  UserData        UserData?          @relation(fields: [UUID_UD], references: [UUID_UD])
+  UUID_UD         String?          
   Title_NF        String
   Description_NF  String            @db.Text
   Category_NG     String            @default("Public")

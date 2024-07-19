@@ -19,9 +19,9 @@ const prisma            = new PrismaClient()
 
 exports.create = async(req, res) => {
     try {
-        const { title, description, value, quota } = req.body
+        const { title, description, value, quota, price } = req.body
 
-        if (!title || !description || !value || !quota) {
+        if (!title || !description || !value || !quota || !price) {
             return badRequestResponse(res, "Please provide all the required fields")
         }
 
@@ -32,6 +32,7 @@ exports.create = async(req, res) => {
                 Description_VD: description,
                 Value_VD: value,
                 Quota_VD: quota,
+                Price_VD: price
             }
         })
 

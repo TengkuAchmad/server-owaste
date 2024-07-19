@@ -128,7 +128,14 @@ exports.findOne = async(req, res) => {
                 Name_UA: true,
                 Phone_UA: true,
                 Photo_UA: true,
-                UserData: true,
+                UserData: {
+                    select: {
+                        Balance_UD: true,
+                        VoucherUser: true,
+                        TransactionData: true
+                    }
+                }
+
             }
         })
 
