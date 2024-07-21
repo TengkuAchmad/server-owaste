@@ -49,9 +49,10 @@ const admin_routes          = require("./app/routes/admin.routes")
 const content_routes        = require("./app/routes/content.routes")
 const voucher_routes        = require("./app/routes/voucher.routes")
 const transaction_routes    = require("./app/routes/transaction.routes")
+const waste_routes          = require("./app/routes/waste.routes")
 
 // ENDPOINT
-const endpoints         = [ test_routes, user_routes, admin_routes, content_routes, voucher_routes, transaction_routes]
+const endpoints         = [ test_routes, user_routes, admin_routes, content_routes, voucher_routes, transaction_routes, waste_routes]
 
 app.use(endpoints)
 

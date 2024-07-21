@@ -2,13 +2,12 @@
 // DO NOT USE THIS FILE
 
 // LIBRARY IMPORT
-const { PrismaClient }          = require("@prisma/client")
-const { v4: uuidv4 }            = require("uuid")
+// const { PrismaClient }          = require("@prisma/client")
+// const { v4: uuidv4 }            = require("uuid")
 
 // ENVIRONMENT
-const { successResponse }       = require("../responses/responses")
-const { badRequestResponse }    = require("../responses/responses")
-
+// const { successResponse }       = require("../responses/response")
+// const { badRequestResponse }    = require("../responses/responses")
 // PRISMA
 // const prisma            = new PrismaClient()
 

@@ -106,8 +106,6 @@ exports.deleteOne = async(req, res) => {
         UUID_AD: id
       }
     })
-
-    console.log(responseArticle)
     
     const isDeleted = await file_services.delete(responseArticle.Image_AD)
     if (isDeleted == false) {
